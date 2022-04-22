@@ -32,7 +32,7 @@ CategoryController.list = wrapAsync(async (req, res, next) => {
     const categories = await CategoryService.list();
 
     res.status(StatusCodes.OK).json({
-        categories,
+        data: categories,
     });
 });
 

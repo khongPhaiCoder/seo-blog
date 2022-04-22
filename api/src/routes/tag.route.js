@@ -1,28 +1,28 @@
 const router = require("express").Router();
 
-const CategoryMiddleware = require("../middleware/category.middleware");
 const requestValidation = require("../middleware/request-validation.middleware");
-const CategoryController = require("../controllers/category.controller");
 const AuthController = require("../controllers/auth.controller");
+const TagController = require("../controllers/tag.controller");
+const TagMiddleware = require("../middleware/tag.middleware");
 
 router.post(
     "/",
     AuthController.requireSignIn,
     AuthController.adminMiddleware,
-    CategoryMiddleware.bodyValidation,
+    TagMiddleware.bodyValidation,
     requestValidation,
-    CategoryController.create
+    TagController.create
 );
 
-router.get("/categories", CategoryController.list);
+router.get("/tags", TagController.list);
 
 router
     .route("/:slug")
-    .get(CategoryController.read)
+    .get(TagController.read)
     .delete(
         AuthController.requireSignIn,
         AuthController.adminMiddleware,
-        CategoryController.remove
+        TagController.remove
     );
 
 module.exports = router;
