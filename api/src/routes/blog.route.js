@@ -35,12 +35,7 @@ router
         BlogController.remove
     );
 
-router.post(
-    "/blogs/related",
-    BlogMiddleware.bodyRelatedValidation,
-    requestValidation,
-    BlogController.listRelated
-);
+router.post("/blogs/related", BlogController.listRelated);
 
 router.get("/blogs/search", BlogController.listSearch);
 

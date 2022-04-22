@@ -61,7 +61,7 @@ BlogService.listRelated = async (_id, categories, limit = 3) => {
     })
         .limit(limit)
         .populate("postedBy", "_id name username profile")
-        .select("title slug excerpt postedBy createdAt updatedAt");
+        .select("title slug excerpt postedBy photo createdAt updatedAt");
 };
 
 BlogService.search = async (keyword) => {

@@ -9,12 +9,14 @@ const SmallCard = ({ blog }) => {
             <section>
                 <Link href={`/blogs/${blog.slug}`}>
                     <a>
-                        <img
-                            className="img img-fluid"
-                            style={{ maxHeight: "auto", width: "100%" }}
-                            src={`${API}/blog/photo/${blog.slug}`}
-                            alt={blog.title}
-                        />
+                        {blog.photo && (
+                            <img
+                                className="img img-fluid"
+                                style={{ maxHeight: "auto", width: "100%" }}
+                                src={`http://localhost:8080/images/${blog.photo}`}
+                                alt={blog.title}
+                            />
+                        )}
                     </a>
                 </Link>
             </section>
@@ -33,7 +35,7 @@ const SmallCard = ({ blog }) => {
             <div className="card-body">
                 Posted {moment(blog.updatedAt).fromNow()} by{" "}
                 <Link href={`/profile/${blog.postedBy.username}`}>
-                    <a>{blog.postedBy.username}</a>
+                    <a>{blog.postedBy.name}</a>
                 </Link>
             </div>
         </div>
