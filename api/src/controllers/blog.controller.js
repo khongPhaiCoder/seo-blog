@@ -14,8 +14,8 @@ BlogController.create = wrapAsync(async (req, res, next) => {
     const { title, body, categories, tags } = req.body;
 
     let image;
-    if (req.files && req.files.blogImage) {
-        image = req.files.blogImage[0].filename;
+    if (req.files && req.files.photo) {
+        image = req.files.photo[0].filename;
     }
 
     const payload = {
@@ -86,8 +86,8 @@ BlogController.update = wrapAsync(async (req, res, next) => {
     const { body, categories, tags } = req.body;
 
     let image;
-    if (req.files && req.files.blogImage) {
-        image = req.files.blogImage[0].filename;
+    if (req.files && req.files.photo) {
+        image = req.files.photo[0].filename;
     }
 
     const payload = {

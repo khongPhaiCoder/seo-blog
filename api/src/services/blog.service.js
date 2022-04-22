@@ -26,7 +26,7 @@ BlogService.listAllBlogsCategoriesTags = async (limit = 10, skip = 0) => {
         .skip(skip)
         .limit(limit)
         .select(
-            "_id title slug excerpt categories tags postedBy createdAt updatedAt"
+            "_id title slug excerpt categories tags postedBy photo createdAt updatedAt"
         );
 };
 
@@ -36,7 +36,7 @@ BlogService.findOne = async (payload) => {
         .populate("tags", "_id name slug")
         .populate("postedBy", "_id name username")
         .select(
-            "_id title body slug mtitle mdesc categories tags postedBy createdAt updatedAt"
+            "_id title body slug mtitle mdesc categories tags postedBy createdAt updatedAt photo"
         );
 };
 

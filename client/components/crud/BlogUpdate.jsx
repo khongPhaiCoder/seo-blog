@@ -1,5 +1,4 @@
-import Link from "next/link";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Router from "next/router";
 import dynamic from "next/dynamic";
 import { withRouter } from "next/router";
@@ -10,10 +9,10 @@ import { singleBlog, updateBlog } from "../../actions/blog";
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 import "../../node_modules/react-quill/dist/quill.snow.css";
 import { QuillModules, QuillFormats } from "../../helpers/quill";
-import { API } from "../../config";
 
 const BlogUpdate = ({ router }) => {
     const [body, setBody] = useState("");
+    const [photo, setPhoto] = useState("");
 
     const [categories, setCategories] = useState([]);
     const [tags, setTags] = useState([]);
@@ -50,6 +49,7 @@ const BlogUpdate = ({ router }) => {
                     setBody(data.body);
                     setCategoriesArray(data.categories);
                     setTagsArray(data.tags);
+                    setPhoto(data.photo);
                 }
             });
         }
@@ -76,7 +76,7 @@ const BlogUpdate = ({ router }) => {
             if (data.error) {
                 setValues({ ...values, error: data.error });
             } else {
-                setCategories(data);
+                setCategories(data.data);
             }
         });
     };
@@ -86,7 +86,7 @@ const BlogUpdate = ({ router }) => {
             if (data.error) {
                 setValues({ ...values, error: data.error });
             } else {
-                setTags(data);
+                setTags(data.data);
             }
         });
     };
@@ -102,7 +102,6 @@ const BlogUpdate = ({ router }) => {
         } else {
             all.splice(clickedCategory, 1);
         }
-        console.log(all);
         setChecked(all);
         formData.set("categories", all);
     };
@@ -118,7 +117,6 @@ const BlogUpdate = ({ router }) => {
         } else {
             all.splice(clickedTag, 1);
         }
-        console.log(all);
         setCheckedTag(all);
         formData.set("tags", all);
     };
@@ -176,7 +174,6 @@ const BlogUpdate = ({ router }) => {
     };
 
     const handleChange = (name) => (e) => {
-        // console.log(e.target.value);
         const value = name === "photo" ? e.target.files[0] : e.target.value;
         formData.set(name, value);
         setValues({ ...values, [name]: value, formData, error: "" });
@@ -270,15 +267,14 @@ const BlogUpdate = ({ router }) => {
                         {showError()}
                     </div>
 
-                    {body && (
+                    {photo && (
                         <img
-                            src={`${API}/blog/photo/${router.query.slug}`}
+                            src={`http://localhost:8080/images/${photo}`}
                             alt={title}
                             style={{ width: "100%" }}
                         />
                     )}
                 </div>
-
                 <div className="col-md-4">
                     <div>
                         <div className="form-group pb-2">

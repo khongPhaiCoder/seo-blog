@@ -35,7 +35,7 @@ const Card = ({ blog }) => {
                 <p className="mark ml-1 pt-2 pb-2">
                     Written by{" "}
                     <Link href={`/profile/${blog.postedBy.username}`}>
-                        <a>{blog.postedBy.username}</a>
+                        <a>{blog.postedBy.name}</a>
                     </Link>{" "}
                     | Published {moment(blog.updatedAt).fromNow()}
                 </p>
@@ -50,12 +50,14 @@ const Card = ({ blog }) => {
             <div className="row">
                 <div className="col-md-4">
                     <section>
-                        <img
-                            className="img img-fluid"
-                            style={{ maxHeight: "auto", width: "100%" }}
-                            src={`${API}/blog/photo/${blog.slug}`}
-                            alt={blog.title}
-                        />
+                        {blog.photo && (
+                            <img
+                                className="img img-fluid"
+                                style={{ maxHeight: "auto", width: "100%" }}
+                                src={`http://localhost:8080/images/${blog.photo}`}
+                                alt={blog.title}
+                            />
+                        )}
                     </section>
                 </div>
                 <div className="col-md-8">

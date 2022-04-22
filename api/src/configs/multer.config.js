@@ -33,7 +33,7 @@ multerConfig.options = {
 
 multerConfig.fields = [
     { name: "profilePicture", maxCount: 1 },
-    { name: "blogImage", maxCount: 1 },
+    { name: "photo", maxCount: 1 },
 ];
 
 module.exports = multerConfig;

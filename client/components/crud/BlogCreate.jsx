@@ -55,7 +55,7 @@ const CreateBlog = ({ router }) => {
             if (data.error) {
                 setValues({ ...values, error: data.error });
             } else {
-                setCategories(data);
+                setCategories(data.data);
             }
         });
     };
@@ -65,14 +65,13 @@ const CreateBlog = ({ router }) => {
             if (data.error) {
                 setValues({ ...values, error: data.error });
             } else {
-                setTags(data);
+                setTags(data.data);
             }
         });
     };
 
     const publishBlog = (e) => {
         e.preventDefault();
-        // console.log('ready to publishBlog');
         createBlog(formData, token).then((data) => {
             if (data.error) {
                 setValues({ ...values, error: data.error });
@@ -91,14 +90,12 @@ const CreateBlog = ({ router }) => {
     };
 
     const handleChange = (name) => (e) => {
-        // console.log(e.target.value);
         const value = name === "photo" ? e.target.files[0] : e.target.value;
         formData.set(name, value);
         setValues({ ...values, [name]: value, formData, error: "" });
     };
 
     const handleBody = (e) => {
-        // console.log(e);
         setBody(e);
         formData.set("body", e);
         if (typeof window !== "undefined") {
@@ -117,7 +114,6 @@ const CreateBlog = ({ router }) => {
         } else {
             all.splice(clickedCategory, 1);
         }
-        console.log(all);
         setChecked(all);
         formData.set("categories", all);
     };
@@ -133,7 +129,6 @@ const CreateBlog = ({ router }) => {
         } else {
             all.splice(clickedTag, 1);
         }
-        console.log(all);
         setCheckedTag(all);
         formData.set("tags", all);
     };
