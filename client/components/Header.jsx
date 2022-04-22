@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Router from "next/router";
 import NProgress from "nprogress";
@@ -21,10 +21,17 @@ Router.onRouteChangeError = (url) => NProgress.done();
 
 const Header = () => {
     const [isOpen, setIsOpen] = useState(false);
+    const [auth, setAuth] = useState(false);
 
     const toggle = () => {
         setIsOpen(!isOpen);
     };
+
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            setAuth(isAuth());
+        }
+    }, []);
 
     return (
         <React.Fragment>
@@ -43,7 +50,7 @@ const Header = () => {
                             </NavItem>
                         </React.Fragment>
 
-                        {!isAuth() && (
+                        {!auth && (
                             <React.Fragment>
                                 <NavItem>
                                     <Link href="/signin">
@@ -58,7 +65,7 @@ const Header = () => {
                             </React.Fragment>
                         )}
 
-                        {isAuth() && isAuth().role === 0 && (
+                        {auth && auth.role === 0 && (
                             <NavItem>
                                 <Link href="/user">
                                     <NavLink>{`${
@@ -68,7 +75,7 @@ const Header = () => {
                             </NavItem>
                         )}
 
-                        {isAuth() && isAuth().role === 1 && (
+                        {auth && auth.role === 1 && (
                             <NavItem>
                                 <Link href="/admin">
                                     <NavLink>{`${
@@ -78,7 +85,7 @@ const Header = () => {
                             </NavItem>
                         )}
 
-                        {isAuth() && (
+                        {auth && (
                             <NavItem>
                                 <NavLink
                                     style={{ cursor: "pointer" }}

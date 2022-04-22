@@ -49,11 +49,11 @@ AuthController.signIn = wrapAsync(async (req, res, next) => {
 
     res.cookie("token", token, { expiresIn: "1d" });
 
-    const { _id, username, name } = user;
+    const { _id, username, name, role } = user;
 
     res.status(StatusCodes.OK).json({
         token,
-        user: { _id, username, name, email },
+        user: { _id, username, name, email, role },
     });
 });
 
@@ -65,5 +65,24 @@ AuthController.signOut = wrapAsync(async (req, res, next) => {
 });
 
 AuthController.requireSignIn = requireSignIn;
+
+AuthController.authMiddleware = wrapAsync(async (req, res, next) => {
+    const userId = req.auth._id;
+    const user = await UserService.findById(userId);
+    req.profile = user;
+    next();
+});
+
+AuthController.adminMiddleware = wrapAsync(async (req, res, next) => {
+    const userId = req.auth._id;
+    const user = await UserService.findById(userId);
+
+    if (user.role !== 1) {
+        throw new CustomError.NotFoundError("Admin resource. Access denied!");
+    }
+
+    req.profile = user;
+    next();
+});
 
 module.exports = AuthController;

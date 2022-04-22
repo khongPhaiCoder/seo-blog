@@ -11,4 +11,8 @@ UserService.findByEmail = async (email) => {
     return await UserModel.findOne({ email: email });
 };
 
+UserService.findById = async (id) => {
+    return await UserModel.findById(id);
+};
+
 module.exports = UserService;

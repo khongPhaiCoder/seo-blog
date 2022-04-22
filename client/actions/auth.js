@@ -48,7 +48,7 @@ export const signout = (next) => {
 
 // set cookie
 export const setCookie = (key, value) => {
-    if (typeof window === "undefined") {
+    if (typeof window !== "undefined") {
         cookie.set(key, value, {
             expires: 1,
         });
@@ -56,7 +56,7 @@ export const setCookie = (key, value) => {
 };
 
 export const removeCookie = (key) => {
-    if (typeof window === "undefined") {
+    if (typeof window !== "undefined") {
         cookie.remove(key, {
             expires: 1,
         });
@@ -64,19 +64,19 @@ export const removeCookie = (key) => {
 };
 // get cookie
 export const getCookie = (key) => {
-    if (typeof window === "undefined") {
+    if (typeof window !== "undefined") {
         return cookie.get(key);
     }
 };
 // localstorage
 export const setLocalStorage = (key, value) => {
-    if (typeof window === "undefined") {
+    if (typeof window !== "undefined") {
         localStorage.setItem(key, JSON.stringify(value));
     }
 };
 
 export const removeLocalStorage = (key) => {
-    if (typeof window === "undefined") {
+    if (typeof window !== "undefined") {
         localStorage.removeItem(key);
     }
 };
@@ -88,14 +88,14 @@ export const authenticate = (data, next) => {
 };
 
 export const isAuth = () => {
-    if (typeof window === "undefined") {
+    if (typeof window !== "undefined") {
         const cookieChecked = getCookie("token");
         if (cookieChecked !== "undefined") {
             if (
                 typeof window !== "undefined" &&
-                localStorage.getItem("user") !== "undefined"
+                localStorage?.getItem("user") !== "undefined"
             ) {
-                return JSON.parse(localStorage.getItem("user"));
+                return JSON.parse(localStorage?.getItem("user"));
             } else {
                 return false;
             }
@@ -104,7 +104,7 @@ export const isAuth = () => {
 };
 
 export const updateUser = (user, next) => {
-    if (typeof window === "undefined") {
+    if (typeof window !== "undefined") {
         if (localStorage.getItem("user")) {
             let auth = JSON.parse(localStorage.getItem("user"));
             auth = user;
