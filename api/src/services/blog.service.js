@@ -73,4 +73,14 @@ BlogService.search = async (keyword) => {
     }).select("-photo -body");
 };
 
+BlogService.findByField = async (payload) => {
+    return await BlogModel.find(payload)
+        .populate("categories", "_id name slug")
+        .populate("tags", "_id name slug")
+        .populate("postedBy", "_id name")
+        .select(
+            "_id title slug excerpt categories postedBy tags photo createdAt updatedAt"
+        );
+};
+
 module.exports = BlogService;

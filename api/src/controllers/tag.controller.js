@@ -3,6 +3,7 @@ const { StatusCodes } = require("http-status-codes");
 
 const TagService = require("../services/tag.service");
 const wrapAsync = require("../utils/wrap-async");
+const BlogService = require("../services/blog.service");
 
 const TagController = {};
 
@@ -31,8 +32,11 @@ TagController.read = wrapAsync(async (req, res, next) => {
 
     const tag = await TagService.findOne({ slug });
 
-    res.stats(StatusCodes.OK).json({
+    const blogs = await BlogService.findByField({ tags: tag });
+
+    res.status(StatusCodes.OK).json({
         tag: tag,
+        blogs: blogs,
     });
 });
 

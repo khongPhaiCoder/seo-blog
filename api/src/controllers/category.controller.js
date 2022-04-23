@@ -2,6 +2,7 @@ const slugify = require("slugify");
 const { StatusCodes } = require("http-status-codes");
 
 const CategoryService = require("../services/category.service");
+const BlogService = require("../services/blog.service");
 const wrapAsync = require("../utils/wrap-async");
 
 const CategoryController = {};
@@ -23,8 +24,11 @@ CategoryController.read = wrapAsync(async (req, res, next) => {
 
     const category = await CategoryService.findOne({ slug });
 
+    const blogs = await BlogService.findByField({ categories: category });
+
     res.status(StatusCodes.OK).json({
         category: category,
+        blogs: blogs,
     });
 });
 
