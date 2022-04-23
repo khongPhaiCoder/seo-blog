@@ -70,7 +70,7 @@ BlogService.search = async (keyword) => {
             { title: { $regex: keyword, $options: "i" } },
             { body: { $regex: keyword, $options: "i" } },
         ],
-    }).select("-photo -body");
+    }).select("-body");
 };
 
 BlogService.findByField = async (payload) => {
