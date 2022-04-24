@@ -48,6 +48,14 @@ const Header = () => {
                                     <NavLink>Blogs</NavLink>
                                 </Link>
                             </NavItem>
+
+                            {auth?.role === 1 && (
+                                <NavItem>
+                                    <Link href="/contact">
+                                        <NavLink>Contact</NavLink>
+                                    </Link>
+                                </NavItem>
+                            )}
                         </React.Fragment>
 
                         {!auth && (
