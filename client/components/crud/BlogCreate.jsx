@@ -35,7 +35,7 @@ const CreateBlog = ({ router }) => {
         error: "",
         sizeError: "",
         success: "",
-        formData: "",
+        formData: typeof window !== "undefined" && new FormData(),
         title: "",
         hidePublishButton: false,
     });

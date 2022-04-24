@@ -24,7 +24,7 @@ const BlogUpdate = ({ router }) => {
         title: "",
         error: "",
         success: "",
-        formData: "",
+        formData: typeof window !== "undefined" && new FormData(),
         title: "",
         body: "",
     });
@@ -42,6 +42,7 @@ const BlogUpdate = ({ router }) => {
     const initBlog = () => {
         if (router.query.slug) {
             singleBlog(router.query.slug).then((data) => {
+                console.log(data);
                 if (data.error) {
                     console.log(data.error);
                 } else {

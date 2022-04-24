@@ -6,6 +6,7 @@ const wrapAsync = require("../utils/wrap-async");
 const { smartTrim } = require("../utils/smart-trim");
 const BlogService = require("../services/blog.service");
 const CategoryService = require("../services/category.service");
+const UserService = require("../services/user.service");
 const TagService = require("../services/tag.service");
 
 const BlogController = {};
@@ -121,6 +122,16 @@ BlogController.listSearch = wrapAsync(async (req, res, next) => {
     if (search) {
         blogs = await BlogService.search(search);
     }
+
+    res.status(StatusCodes.OK).json(blogs);
+});
+
+BlogController.listByUser = wrapAsync(async (req, res, next) => {
+    const user = await UserService.findByField({
+        username: req.params.username,
+    });
+
+    const blogs = await BlogService.findByField({ postedBy: user._id });
 
     res.status(StatusCodes.OK).json(blogs);
 });

@@ -47,16 +47,20 @@ router.post(
     BlogController.create
 );
 
+router.get("/:username/blogs", BlogController.listByUser);
+
 router
     .route("/user/blog/:slug")
     .put(
         AuthController.requireSignIn,
         AuthController.authMiddleware,
+        AuthController.canUpdateDeleteBlog,
         BlogController.update
     )
     .delete(
         AuthController.requireSignIn,
         AuthController.authMiddleware,
+        AuthController.canUpdateDeleteBlog,
         BlogController.remove
     );
 

@@ -5,6 +5,7 @@ const UserService = require("../services/user.service");
 const wrapAsync = require("../utils/wrap-async");
 const CustomError = require("../errors/index");
 const { createJWT, requireSignIn } = require("../utils/jwt");
+const BlogService = require("../services/blog.service");
 
 const AuthController = {};
 
@@ -82,6 +83,25 @@ AuthController.adminMiddleware = wrapAsync(async (req, res, next) => {
     }
 
     req.profile = user;
+    next();
+});
+
+AuthController.canUpdateDeleteBlog = wrapAsync(async (req, res, next) => {
+    const slug = req.params.slug.toLowerCase();
+
+    const blog = await BlogService.findOne({ slug });
+
+    if (!blog) {
+        throw new CustomError.NotFoundError("Blog not found!");
+    }
+
+    const authorizedUser =
+        blog.postedBy._id.toString() === req.profile._id.toString();
+
+    if (!authorizedUser) {
+        throw new CustomError.UnauthorizedError("You are not authorized!");
+    }
+
     next();
 });
 

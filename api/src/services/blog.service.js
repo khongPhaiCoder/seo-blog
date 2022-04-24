@@ -77,7 +77,7 @@ BlogService.findByField = async (payload) => {
     return await BlogModel.find(payload)
         .populate("categories", "_id name slug")
         .populate("tags", "_id name slug")
-        .populate("postedBy", "_id name")
+        .populate("postedBy", "_id name username")
         .select(
             "_id title slug excerpt categories postedBy tags photo createdAt updatedAt"
         );
