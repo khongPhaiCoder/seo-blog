@@ -1,10 +1,11 @@
 const shortId = require("shortid");
 const { StatusCodes } = require("http-status-codes");
+const sgMail = require("@sendgrid/mail");
 
 const UserService = require("../services/user.service");
 const wrapAsync = require("../utils/wrap-async");
 const CustomError = require("../errors/index");
-const { createJWT, requireSignIn } = require("../utils/jwt");
+const { createJWT, requireSignIn, decodedJWTToken } = require("../utils/jwt");
 const BlogService = require("../services/blog.service");
 
 const AuthController = {};
@@ -103,6 +104,70 @@ AuthController.canUpdateDeleteBlog = wrapAsync(async (req, res, next) => {
     }
 
     next();
+});
+
+AuthController.forgotPassword = wrapAsync(async (req, res, next) => {
+    const { email } = req.body;
+
+    const user = await UserService.findByEmail(email);
+
+    if (!user) {
+        throw new CustomError.NotFoundError(
+            "User with that email does not exist!"
+        );
+    }
+
+    const token = createJWT({ _id: user._id }, "10m");
+
+    const emailData = {
+        from: process.env.EMAIL_FROM,
+        to: email,
+        subject: `Password reset link`,
+        html: `
+            <p>Please use the following link to reset your password:</p>
+            <p>${process.env.CLIENT_URL}/auth/password/reset/${token}</p>
+            <hr />
+            <p>This email may contain sensitive information</p>
+            <p>https://seoblog.com</p>
+        `,
+    };
+
+    await UserService.update(user._id, { resetPasswordLink: token });
+
+    await sgMail.send(emailData);
+
+    res.status(StatusCodes.OK).json({
+        message: `Email has been sent to ${email}. Follow the instructions to reset your password. Link expires in 10min`,
+    });
+});
+
+AuthController.resetPassword = wrapAsync(async (req, res, next) => {
+    const { resetPasswordLink, newPassword } = req.body;
+
+    if (resetPasswordLink) {
+        if (!decodedJWTToken(resetPasswordLink)) {
+            throw new CustomError.UnauthorizedError("Expired link. Try again");
+        }
+
+        const user = await UserService.findByField({ resetPasswordLink });
+
+        if (!user) {
+            throw new CustomError.BadRequestError(
+                "Something went wrong. Try later"
+            );
+        }
+
+        const updatedFields = {
+            password: newPassword,
+            resetPasswordLink: "",
+        };
+
+        await UserService.update(user._id, updatedFields);
+
+        res.status(StatusCodes.OK).json({
+            message: "Great! Now you can login with your new password",
+        });
+    }
 });
 
 module.exports = AuthController;

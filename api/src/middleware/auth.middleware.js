@@ -23,4 +23,20 @@ AuthMiddleware.bodySignInValidation = [
         .withMessage("Password must be at least 6 characters long"),
 ];
 
+AuthMiddleware.forgotPasswordValidator = [
+    body("email")
+        .not()
+        .isEmpty()
+        .isEmail()
+        .withMessage("Must be a valid email address"),
+];
+
+AuthMiddleware.resetPasswordValidator = [
+    body("newPassword")
+        .not()
+        .isEmpty()
+        .isLength({ min: 6 })
+        .withMessage("Password must be at least 6 characters long"),
+];
+
 module.exports = AuthMiddleware;

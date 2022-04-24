@@ -1,9 +1,9 @@
 const jwt = require("jsonwebtoken");
 const { expressjwt: expressJWT } = require("express-jwt");
 
-const createJWT = (payload) => {
+const createJWT = (payload, expires) => {
     return jwt.sign(payload, process.env.JWT_SECRET, {
-        expiresIn: process.env.JWT_LIFETIME,
+        expiresIn: expires || process.env.JWT_LIFETIME,
     });
 };
 

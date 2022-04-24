@@ -20,4 +20,18 @@ router.post(
 
 router.get("/signout", AuthController.signOut);
 
+router.put(
+    "/forgot-password",
+    AuthMiddleware.forgotPasswordValidator,
+    requestValidation,
+    AuthController.forgotPassword
+);
+
+router.put(
+    "/reset-password",
+    AuthMiddleware.resetPasswordValidator,
+    requestValidation,
+    AuthController.resetPassword
+);
+
 module.exports = router;
