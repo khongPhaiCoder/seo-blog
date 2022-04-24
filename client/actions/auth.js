@@ -106,8 +106,7 @@ export const isAuth = () => {
 export const updateUser = (user, next) => {
     if (typeof window !== "undefined") {
         if (localStorage.getItem("user")) {
-            let auth = JSON.parse(localStorage.getItem("user"));
-            auth = user;
+            let auth = user;
             localStorage.setItem("user", JSON.stringify(auth));
             next();
         }

@@ -59,8 +59,8 @@ const Category = ({ category, blogs, query }) => {
                                     {category.name}
                                 </h1>
                                 {blogs.map((b, i) => (
-                                    <div>
-                                        <Card key={i} blog={b} />
+                                    <div key={i}>
+                                        <Card blog={b} />
                                         <hr />
                                     </div>
                                 ))}

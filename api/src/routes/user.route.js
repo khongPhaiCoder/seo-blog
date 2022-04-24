@@ -10,4 +10,13 @@ router.get(
     UserController.read
 );
 
+router.get("/:username", UserController.publicProfile);
+
+router.put(
+    "/update",
+    AuthController.requireSignIn,
+    AuthController.authMiddleware,
+    UserController.update
+);
+
 module.exports = router;

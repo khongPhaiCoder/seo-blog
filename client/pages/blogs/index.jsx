@@ -83,7 +83,6 @@ const Blogs = ({
 
     const showAllBlogs = () => {
         return blogs.map((blog, i) => {
-            // ()
             return (
                 <article key={i}>
                     <Card blog={blog} />
