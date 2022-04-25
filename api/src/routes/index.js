@@ -6,6 +6,7 @@ const categoryRouter = require("./category.route");
 const tagRouter = require("./tag.route");
 const blogRouter = require("./blog.route");
 const formRouter = require("./form.route");
+const commentRouter = require("./comment.route");
 
 apiRouter.use("/auth", authRouter);
 apiRouter.use("/user", userRouter);
@@ -13,5 +14,6 @@ apiRouter.use("/category", categoryRouter);
 apiRouter.use("/tag", tagRouter);
 apiRouter.use("/blog", blogRouter);
 apiRouter.use("/form", formRouter);
+apiRouter.use("/comment", commentRouter);
 
 module.exports = apiRouter;

@@ -12,20 +12,20 @@ const Category = ({ category, blogs, query }) => {
     const head = () => (
         <Head>
             <title>
-                {category.name} | {APP_NAME}
+                {category?.name} | {APP_NAME}
             </title>
             <meta
                 name="description"
-                content={`Best programming tutorials on ${category.name}`}
+                content={`Best programming tutorials on ${category?.name}`}
             />
             <link rel="canonical" href={`${DOMAIN}/categories/${query.slug}`} />
             <meta
                 property="og:title"
-                content={`${category.name}| ${APP_NAME}`}
+                content={`${category?.name}| ${APP_NAME}`}
             />
             <meta
                 property="og:description"
-                content={`Best programming tutorials on ${category.name}`}
+                content={`Best programming tutorials on ${category?.name}`}
             />
             <meta property="og:type" content="webiste" />
             <meta
@@ -56,7 +56,7 @@ const Category = ({ category, blogs, query }) => {
                         <header>
                             <div className="col-md-12 pt-3">
                                 <h1 className="display-4 font-weight-bold">
-                                    {category.name}
+                                    {category?.name}
                                 </h1>
                                 {blogs.map((b, i) => (
                                     <div key={i}>

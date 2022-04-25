@@ -12,6 +12,14 @@ BlogService.list = async () => {
         .populate("categories", "_id name slug")
         .populate("tags", "_id name slug")
         .populate("postedBy", "_id name username")
+        .populate({
+            path: "comments",
+            select: "_id body user blog comments updatedAt",
+            populate: {
+                path: "comments",
+                select: "_id body user blog comments updatedAt",
+            },
+        })
         .select(
             "_id title slug excerpt categories tags postedBy createdAt updatedAt"
         );
@@ -35,6 +43,14 @@ BlogService.findOne = async (payload) => {
         .populate("categories", "_id name slug")
         .populate("tags", "_id name slug")
         .populate("postedBy", "_id name username")
+        .populate({
+            path: "comments",
+            select: "_id body user blog comments updatedAt",
+            populate: {
+                path: "comments",
+                select: "_id body user blog comments updatedAt",
+            },
+        })
         .select(
             "_id title body slug mtitle mdesc categories tags postedBy createdAt updatedAt photo"
         );
@@ -78,9 +94,29 @@ BlogService.findByField = async (payload) => {
         .populate("categories", "_id name slug")
         .populate("tags", "_id name slug")
         .populate("postedBy", "_id name username")
+        .populate({
+            path: "comments",
+            select: "_id body user blog comments updatedAt",
+            populate: {
+                path: "comments",
+                select: "_id body user blog comments updatedAt",
+            },
+        })
         .select(
             "_id title slug excerpt categories postedBy tags photo createdAt updatedAt"
         );
+};
+
+BlogService.addComment = async (id, comment) => {
+    return await BlogModel.findByIdAndUpdate(id, {
+        $push: { comments: comment },
+    });
+};
+
+BlogService.removeComment = async (id, comment) => {
+    return await BlogModel.findByIdAndUpdate(id, {
+        $pull: { comments: comment },
+    });
 };
 
 module.exports = BlogService;

@@ -34,8 +34,26 @@ const BlogSchema = new mongoose.Schema(
         photo: {
             type: String,
         },
-        categories: [{ type: ObjectId, ref: "Category", required: true }],
-        tags: [{ type: ObjectId, ref: "Tag", required: true }],
+        categories: [
+            {
+                type: ObjectId,
+                ref: "Category",
+                required: true,
+            },
+        ],
+        tags: [
+            {
+                type: ObjectId,
+                ref: "Tag",
+                required: true,
+            },
+        ],
+        comments: [
+            {
+                type: ObjectId,
+                ref: "Comment",
+            },
+        ],
         postedBy: {
             type: ObjectId,
             ref: "User",
