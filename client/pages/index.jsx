@@ -43,7 +43,7 @@ const Index = () => {
                                     </h2>
                                 </div>
                                 <div className="back text-center">
-                                    <Link href="/categories/react">
+                                    <Link href="/categories/category-1">
                                         <a>
                                             <h3 className="h1">React Js</h3>
                                         </a>
@@ -72,7 +72,7 @@ const Index = () => {
                                     </h2>
                                 </div>
                                 <div className="back text-center">
-                                    <Link href="/categories/node">
+                                    <Link href="/categories/category-2">
                                         <a>
                                             <h3 className="h1">Node Js</h3>
                                         </a>
@@ -101,7 +101,7 @@ const Index = () => {
                                     </h2>
                                 </div>
                                 <div className="back text-center">
-                                    <Link href="/categories/nextjs">
+                                    <Link href="/categories/category-3">
                                         <a>
                                             <h3 className="h1">Next Js</h3>
                                         </a>

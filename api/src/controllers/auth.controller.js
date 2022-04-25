@@ -1,6 +1,7 @@
 const shortId = require("shortid");
 const { StatusCodes } = require("http-status-codes");
 const sgMail = require("@sendgrid/mail");
+const { OAuth2Client } = require("google-auth-library");
 
 const UserService = require("../services/user.service");
 const wrapAsync = require("../utils/wrap-async");
@@ -166,6 +167,53 @@ AuthController.resetPassword = wrapAsync(async (req, res, next) => {
 
         res.status(StatusCodes.OK).json({
             message: "Great! Now you can login with your new password",
+        });
+    }
+});
+
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+AuthController.googleLogin = wrapAsync(async (req, res, next) => {
+    const idToken = req.body.tokenId;
+    const response = await client.verifyIdToken({
+        idToken,
+        audience: process.env.GOOGLE_CLIENT_ID,
+    });
+    const { email_verified, name, email, jti } = response.payload;
+
+    if (!email_verified) {
+        throw new CustomError.BadRequestError(
+            "Google login failed. Try again."
+        );
+    }
+
+    const user = await UserService.findByEmail(email);
+
+    if (user) {
+        const token = createJWT({ _id: user._id });
+        res.cookie("token", token, { expiresIn: "1d" });
+        const { _id, email, name, role, username } = user;
+
+        return res
+            .status(StatusCodes.OK)
+            .json({ token, user: { _id, email, name, role, username } });
+    } else {
+        const username = shortId.generate();
+        const profile = `${process.env.CLIENT_URL}/profile/${username}`;
+        const password = jti;
+
+        const user = await UserService.newUser({
+            name,
+            email,
+            profile,
+            username,
+            password,
+        });
+        const token = createJWT({ _id: user._id });
+        res.cookie("token", token, { expiresIn: "1d" });
+        const { _id, email, name, role } = user;
+        return res.status(StatusCodes.OK).json({
+            token,
+            user: { _id, email, name, role, username },
         });
     }
 });

@@ -34,4 +34,7 @@ router.put(
     AuthController.resetPassword
 );
 
+// google login
+router.post("/google-login", AuthController.googleLogin);
+
 module.exports = router;
