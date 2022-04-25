@@ -1,7 +1,6 @@
 import Layout from "../../../components/Layout";
 import Private from "../../../components/auth/Private";
 import BlogRead from "../../../components/crud/BlogRead";
-import Link from "next/link";
 import { isAuth } from "../../../actions/auth";
 
 const Blog = () => {

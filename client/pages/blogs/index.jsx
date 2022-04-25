@@ -5,7 +5,7 @@ import Layout from "../../components/Layout";
 import React, { useState } from "react";
 import { listBlogsWithCategoriesAndTags } from "../../actions/blog";
 import Card from "../../components/blog/Card";
-import { API, DOMAIN, APP_NAME, FB_APP_ID } from "../../config";
+import { DOMAIN, APP_NAME, FB_APP_ID } from "../../config";
 
 const Blogs = ({
     blogs,

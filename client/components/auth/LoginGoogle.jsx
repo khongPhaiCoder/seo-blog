@@ -1,5 +1,3 @@
-import Link from "next/link";
-import { useState, useEffect } from "react";
 import Router from "next/router";
 import GoogleLogin from "react-google-login";
 import { loginWithGoogle, authenticate, isAuth } from "../../actions/auth";

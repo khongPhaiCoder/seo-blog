@@ -3,7 +3,7 @@ import Head from "next/head";
 import Link from "next/link";
 import Layout from "../../components/Layout";
 import { userPublicProfile } from "../../actions/user";
-import { API, DOMAIN, APP_NAME, FB_APP_ID } from "../../config";
+import { DOMAIN, APP_NAME, FB_APP_ID } from "../../config";
 import moment from "moment";
 import ContactForm from "../../components/form/ContactForm";
 

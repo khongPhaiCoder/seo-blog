@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Link from "next/link";
-import Router from "next/router";
 import { getCookie } from "../../actions/auth";
 import { create, getTags, removeTag } from "../../actions/tag";
 
