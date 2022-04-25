@@ -79,7 +79,14 @@ const UserProfile = ({ user, blogs, query }) => {
                                         </div>
                                         <div className="col-md-4">
                                             <img
-                                                src={`http://localhost:8080/images/${user.photo}`}
+                                                src={
+                                                    user.photo.substring(
+                                                        0,
+                                                        5
+                                                    ) !== "https"
+                                                        ? `http://localhost:8080/images/${user.photo}`
+                                                        : user.photo
+                                                }
                                                 className="img img-fluid img-thumbnail mb-3"
                                                 style={{
                                                     maxHeight: "100px",

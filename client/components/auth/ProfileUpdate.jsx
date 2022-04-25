@@ -191,7 +191,11 @@ const ProfileUpdate = () => {
                 <div className="row">
                     <div className="col-md-4">
                         <img
-                            src={`http://localhost:8080/images/${photo}`}
+                            src={
+                                photo.substring(0, 5) !== "https"
+                                    ? `http://localhost:8080/images/${photo}`
+                                    : photo
+                            }
                             className="img img-fluid img-thumbnail mb-3"
                             style={{ maxHeight: "auto", maxWidth: "100%" }}
                             alt="user profile"

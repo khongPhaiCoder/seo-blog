@@ -178,7 +178,8 @@ AuthController.googleLogin = wrapAsync(async (req, res, next) => {
         idToken,
         audience: process.env.GOOGLE_CLIENT_ID,
     });
-    const { email_verified, name, email, jti } = response.payload;
+
+    const { email_verified, name, email, jti, picture } = response.payload;
 
     if (!email_verified) {
         throw new CustomError.BadRequestError(
@@ -207,13 +208,20 @@ AuthController.googleLogin = wrapAsync(async (req, res, next) => {
             profile,
             username,
             password,
+            photo: picture,
         });
         const token = createJWT({ _id: user._id });
         res.cookie("token", token, { expiresIn: "1d" });
-        const { _id, email, name, role } = user;
+
         return res.status(StatusCodes.OK).json({
             token,
-            user: { _id, email, name, role, username },
+            user: {
+                _id: user._id.toString(),
+                email,
+                name,
+                role: user._doc.role,
+                username: user._doc.username,
+            },
         });
     }
 });

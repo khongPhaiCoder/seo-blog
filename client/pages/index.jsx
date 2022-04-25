@@ -14,7 +14,6 @@ const Index = () => {
                         </div>
                     </div>
                 </div>
-
                 <div className="container">
                     <div className="row">
                         <div className="col-md-12 text-center pt-4 pb-5">
@@ -55,7 +54,6 @@ const Index = () => {
                                 </div>
                             </div>
                         </div>
-
                         <div className="col-md-4">
                             <div className="flip flip-horizontal">
                                 <div
@@ -84,7 +82,6 @@ const Index = () => {
                                 </div>
                             </div>
                         </div>
-
                         <div className="col-md-4">
                             <div className="flip flip-horizontal">
                                 <div
