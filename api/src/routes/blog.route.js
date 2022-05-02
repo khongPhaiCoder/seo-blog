@@ -51,6 +51,11 @@ router.get("/:username/blogs", BlogController.listByUser);
 
 router
     .route("/user/blog/:slug")
+    .post(
+        AuthController.requireSignIn,
+        AuthController.authMiddleware,
+        BlogController.react
+    )
     .put(
         AuthController.requireSignIn,
         AuthController.authMiddleware,

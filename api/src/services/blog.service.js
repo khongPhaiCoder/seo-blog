@@ -15,13 +15,9 @@ BlogService.list = async () => {
         .populate({
             path: "comments",
             select: "_id body user blog comments updatedAt",
-            populate: {
-                path: "comments",
-                select: "_id body user blog comments updatedAt",
-            },
         })
         .select(
-            "_id title slug excerpt categories tags postedBy createdAt updatedAt"
+            "_id title slug excerpt categories tags likes postedBy createdAt updatedAt"
         );
 };
 
@@ -34,7 +30,7 @@ BlogService.listAllBlogsCategoriesTags = async (limit = 10, skip = 0) => {
         .skip(skip)
         .limit(limit)
         .select(
-            "_id title slug excerpt categories tags postedBy photo createdAt updatedAt"
+            "_id title slug excerpt categories tags likes postedBy photo createdAt updatedAt"
         );
 };
 
@@ -43,16 +39,8 @@ BlogService.findOne = async (payload) => {
         .populate("categories", "_id name slug")
         .populate("tags", "_id name slug")
         .populate("postedBy", "_id name username")
-        .populate({
-            path: "comments",
-            select: "_id body user blog comments updatedAt",
-            populate: {
-                path: "comments",
-                select: "_id body user blog comments updatedAt",
-            },
-        })
         .select(
-            "_id title body slug mtitle mdesc categories tags postedBy createdAt updatedAt photo"
+            "_id title body slug mtitle mdesc categories tags likes postedBy createdAt updatedAt photo"
         );
 };
 
@@ -77,7 +65,7 @@ BlogService.listRelated = async (_id, categories, limit = 3) => {
     })
         .limit(limit)
         .populate("postedBy", "_id name username profile")
-        .select("title slug excerpt postedBy photo createdAt updatedAt");
+        .select("title slug excerpt postedBy photo likes createdAt updatedAt");
 };
 
 BlogService.search = async (keyword) => {
@@ -94,28 +82,20 @@ BlogService.findByField = async (payload) => {
         .populate("categories", "_id name slug")
         .populate("tags", "_id name slug")
         .populate("postedBy", "_id name username")
-        .populate({
-            path: "comments",
-            select: "_id body user blog comments updatedAt",
-            populate: {
-                path: "comments",
-                select: "_id body user blog comments updatedAt",
-            },
-        })
         .select(
-            "_id title slug excerpt categories postedBy tags photo createdAt updatedAt"
+            "_id title slug excerpt categories postedBy tags likes photo createdAt updatedAt"
         );
 };
 
-BlogService.addComment = async (id, comment) => {
+BlogService.push = async (id, payload) => {
     return await BlogModel.findByIdAndUpdate(id, {
-        $push: { comments: comment },
+        $push: payload,
     });
 };
 
-BlogService.removeComment = async (id, comment) => {
+BlogService.pull = async (id, payload) => {
     return await BlogModel.findByIdAndUpdate(id, {
-        $pull: { comments: comment },
+        $pull: payload,
     });
 };
 

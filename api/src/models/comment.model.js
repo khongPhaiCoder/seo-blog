@@ -11,20 +11,10 @@ const CommentSchema = new mongoose.Schema(
             ref: "User",
             required: true,
         },
-        parent: {
-            type: mongoose.Types.ObjectId,
-            ref: "Comment",
+        path: {
+            type: String,
+            default: null,
         },
-        blog: {
-            type: mongoose.Types.ObjectId,
-            ref: "Blog",
-        },
-        comments: [
-            {
-                type: mongoose.Types.ObjectId,
-                ref: "Comment",
-            },
-        ],
     },
     { timestamps: true }
 );

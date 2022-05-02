@@ -107,7 +107,7 @@ BlogController.update = wrapAsync(async (req, res, next) => {
 
 BlogController.listRelated = wrapAsync(async (req, res, next) => {
     const limit = req.body.limit ? +req.body.limit : 3;
-    const { _id, categories } = req.body.blog;
+    const { _id, categories } = req.body;
 
     const blogs = await BlogService.listRelated(_id, categories, limit);
 
@@ -134,6 +134,28 @@ BlogController.listByUser = wrapAsync(async (req, res, next) => {
     const blogs = await BlogService.findByField({ postedBy: user._id });
 
     res.status(StatusCodes.OK).json(blogs);
+});
+
+BlogController.react = wrapAsync(async (req, res, next) => {
+    const slug = req.params.slug.toLowerCase();
+
+    const blog = await BlogService.findOne({ slug });
+
+    const user = req.auth._id;
+
+    let action;
+
+    if (blog._doc?.likes && blog._doc?.likes.includes(user)) {
+        BlogService.pull(blog._id, { likes: user });
+        action = "Dislike";
+    } else {
+        BlogService.push(blog._id, { likes: user });
+        action = "Like";
+    }
+
+    res.status(StatusCodes.OK).json({
+        message: `${action} to blog ${slug}`,
+    });
 });
 
 module.exports = BlogController;

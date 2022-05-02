@@ -5,10 +5,14 @@
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "nodemon index.js"
+        "start-dev": "nodemon index.js",
+        "start": "pm2 start index.js",
+        "stop": "pm2 stop index.js",
+        "restart": "pm2 restart index.js",
+        "delete": "pm2 delete index.js"
     },
     "keywords": [],
-    "author": "",
+    "author": "khongPhaiCoder",
     "license": "ISC",
     "dependencies": {
         "@sendgrid/mail": "^7.6.2",

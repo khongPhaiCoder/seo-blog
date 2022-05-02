@@ -47,12 +47,12 @@ FormController.contactBlogAuthorForm = wrapAsync(async (req, res, next) => {
             <p>Email: ${email}</p>
             <p>Message: ${message}</p>
             <hr />
-            <p>This email may contain sensetive information</p>
+            <p>This email may contain sensitive information</p>
             <p>https://seoblog.com</p>
         `,
     };
 
-    const sent = await sgMail.send(emailData);
+    const sent = await sgMail.sendMultiple(emailData);
 
     res.status(StatusCodes.OK).json({
         success: true,

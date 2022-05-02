@@ -54,6 +54,12 @@ const BlogSchema = new mongoose.Schema(
                 ref: "Comment",
             },
         ],
+        likes: [
+            {
+                type: ObjectId,
+                ref: "User",
+            },
+        ],
         postedBy: {
             type: ObjectId,
             ref: "User",
