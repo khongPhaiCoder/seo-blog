@@ -48,12 +48,12 @@ const BlogSchema = new mongoose.Schema(
                 required: true,
             },
         ],
-        comments: [
-            {
-                type: ObjectId,
-                ref: "Comment",
-            },
-        ],
+        // comments: [
+        //     {
+        //         type: ObjectId,
+        //         ref: "Comment",
+        //     },
+        // ],
         likes: [
             {
                 type: ObjectId,

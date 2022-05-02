@@ -1,37 +1,49 @@
 const { StatusCodes } = require("http-status-codes");
+
 const CustomError = require("../errors/index");
 const BlogService = require("../services/blog.service");
-
 const CommentService = require("../services/comment.service");
 const wrapAsync = require("../utils/wrap-async");
+const convertToTreeView = require("../utils/convert-to-tree-view");
 
 const CommentController = {};
 
 CommentController.create = wrapAsync(async (req, res, next) => {
-    const { body, parent, blog } = req.body;
+    const { body, parent } = req.body;
 
-    const payload = { body };
-    payload.user = req.auth._id;
-    if (parent) {
-        payload.parent = parent;
-    } else if (blog) {
-        payload.blog = blog;
-    } else {
-        throw new CustomError.BadRequestError(
-            "blog id or comment parent id is required"
-        );
-    }
+    const payload = { body, user: req.auth._id };
 
-    const comment = await CommentService.create(payload);
+    const parent_obj = await CommentService.findOne({ _id: parent });
 
-    if (parent) {
-        await CommentService.addComment(parent, comment._id);
-    } else if (blog) {
-        await BlogService.addComment(blog, comment._id);
-    }
+    const path = parent_obj
+        ? `${parent_obj._doc.path},${parent_obj._id}`
+        : `${parent}`;
+
+    const comment = await CommentService.create({ ...payload, path });
 
     res.status(StatusCodes.CREATED).json({
         message: `Comment ${comment._id.toString()} created.`,
+    });
+});
+
+CommentController.getComments = wrapAsync(async (req, res, next) => {
+    const { parent } = req.query;
+
+    const regex = new RegExp(`${parent}`);
+
+    const comments = await CommentService.find({ path: regex });
+
+    const _comments = comments.map((item) => {
+        return {
+            ...item._doc,
+            _id: item._id.toString(),
+        };
+    });
+
+    const nestedComment = convertToTreeView(_comments, parent);
+
+    res.status(StatusCodes.OK).json({
+        nestedComment,
     });
 });
 
@@ -50,9 +62,13 @@ CommentController.update = wrapAsync(async (req, res, next) => {
 });
 
 CommentController.delete = wrapAsync(async (req, res, next) => {
-    const { commentId, blog, parent } = req.body;
+    const { commentId } = req.body;
 
     const comment = await CommentService.findOne({ _id: commentId });
+
+    if (!comment) {
+        throw new CustomError.NotFoundError("Comment not found");
+    }
 
     if (
         req.auth.role !== 1 &&
@@ -61,15 +77,9 @@ CommentController.delete = wrapAsync(async (req, res, next) => {
         throw new CustomError.UnauthorizedError("Access denied");
     }
 
-    if (parent) {
-        await CommentService.removeComment(parent, commentId);
-    } else if (blog) {
-        await BlogService.removeComment(blog, commentId);
-    } else {
-        throw new CustomError.NotFoundError("Comment not found!");
-    }
+    const regex = new RegExp(`^${comment._doc.path}`);
 
-    await CommentService.delete(commentId);
+    await CommentService.delete(commentId, { path: regex });
 
     res.status(StatusCodes.OK).json({
         message: `Comment ${commentId} deleted`,

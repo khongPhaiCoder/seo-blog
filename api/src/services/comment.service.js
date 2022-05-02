@@ -11,6 +11,10 @@ CommentService.findOne = async (payload) => {
     return CommentModel.findOne(payload);
 };
 
+CommentService.find = async (payload) => {
+    return CommentModel.find(payload).sort({ path: 1 });
+};
+
 CommentService.update = async (id, payload) => {
     return await CommentModel.findByIdAndUpdate(
         id,
@@ -21,8 +25,8 @@ CommentService.update = async (id, payload) => {
     );
 };
 
-CommentService.delete = async (id) => {
-    return await CommentModel.findByIdAndDelete(id);
+CommentService.delete = async (id, payload) => {
+    return await CommentModel.find(payload).remove().exec();
 };
 
 CommentService.addComment = async (id, childId) => {

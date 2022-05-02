@@ -7,6 +7,7 @@ const requestValidation = require("../middleware/request-validation.middleware")
 
 router
     .route("/")
+    .get(CommentController.getComments)
     .post(
         AuthController.requireSignIn,
         AuthController.authMiddleware,
