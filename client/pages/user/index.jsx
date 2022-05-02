@@ -12,21 +12,29 @@ const UserIndex = () => {
                             <h2>User Dashboard</h2>
                         </div>
                         <div className="col-md-4">
-                            <ul className="list-group">
-                                <li className="list-group-item">
-                                    <a href="/user/crud/create">Create Blog</a>
-                                </li>
-
-                                <li className="list-group-item">
-                                    <Link href="/user/crud/blogs">
-                                        <a>Update/Delete Blog</a>
-                                    </Link>
-                                </li>
-
-                                <li className="list-group-item">
-                                    <a href="/user/update">Update profile</a>
-                                </li>
-                            </ul>
+                            <div className="list-group">
+                                <a
+                                    href="/user/crud/create"
+                                    className="list-group-item"
+                                    style={{ textDecoration: "none" }}
+                                >
+                                    Create Blog
+                                </a>
+                                <a
+                                    href="/user/crud/blogs"
+                                    className="list-group-item"
+                                    style={{ textDecoration: "none" }}
+                                >
+                                    Update/Delete Blog
+                                </a>
+                                <a
+                                    href="/user/update"
+                                    className="list-group-item"
+                                    style={{ textDecoration: "none" }}
+                                >
+                                    Update profile
+                                </a>
+                            </div>
                         </div>
                         {/* <div className="col-md-8">right</div> */}
                     </div>

@@ -48,18 +48,16 @@ const BlogSchema = new mongoose.Schema(
                 required: true,
             },
         ],
-        // comments: [
-        //     {
-        //         type: ObjectId,
-        //         ref: "Comment",
-        //     },
-        // ],
         likes: [
             {
                 type: ObjectId,
                 ref: "User",
             },
         ],
+        likes_count: {
+            type: Number,
+            default: 0,
+        },
         postedBy: {
             type: ObjectId,
             ref: "User",

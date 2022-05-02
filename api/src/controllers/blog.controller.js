@@ -8,6 +8,7 @@ const BlogService = require("../services/blog.service");
 const CategoryService = require("../services/category.service");
 const UserService = require("../services/user.service");
 const TagService = require("../services/tag.service");
+const CustomError = require("../errors");
 
 const BlogController = {};
 
@@ -141,6 +142,11 @@ BlogController.react = wrapAsync(async (req, res, next) => {
 
     const blog = await BlogService.findOne({ slug });
 
+    if (!blog) {
+        throw new CustomError.NotFoundError(`${slug} not found!`);
+    }
+
+    let likes_count = +blog._doc.likes_count || 0;
     const user = req.auth._id;
 
     let action;
@@ -148,13 +154,20 @@ BlogController.react = wrapAsync(async (req, res, next) => {
     if (blog._doc?.likes && blog._doc?.likes.includes(user)) {
         BlogService.pull(blog._id, { likes: user });
         action = "Dislike";
+        likes_count--;
     } else {
         BlogService.push(blog._id, { likes: user });
         action = "Like";
+        likes_count++;
     }
+
+    likes_count = likes_count >= 0 ? likes_count : 0;
+
+    await BlogService.update(blog._id, { likes_count });
 
     res.status(StatusCodes.OK).json({
         message: `${action} to blog ${slug}`,
+        likes_count,
     });
 });
 

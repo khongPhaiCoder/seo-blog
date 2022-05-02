@@ -63,7 +63,7 @@ export const listRelated = (blog) => {
             Accept: "application/json",
             "Content-Type": "application/json",
         },
-        body: JSON.stringify(blog),
+        body: JSON.stringify({ _id: blog._id, categories: blog.categories }),
     })
         .then((response) => {
             return response.json();
@@ -143,6 +143,20 @@ export const listSearch = (params) => {
     console.log("query params", query);
     return fetch(`${API}/blog/blogs/search?${query}`, {
         method: "GET",
+    })
+        .then((response) => {
+            return response.json();
+        })
+        .catch((err) => console.log(err));
+};
+
+export const react = (slug, token) => {
+    return fetch(`${API}/blog/user/blog/${slug}`, {
+        method: "POST",
+        headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${token}`,
+        },
     })
         .then((response) => {
             return response.json();

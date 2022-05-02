@@ -1,7 +1,6 @@
 const { StatusCodes } = require("http-status-codes");
 
 const CustomError = require("../errors/index");
-const BlogService = require("../services/blog.service");
 const CommentService = require("../services/comment.service");
 const wrapAsync = require("../utils/wrap-async");
 const convertToTreeView = require("../utils/convert-to-tree-view");

@@ -46,7 +46,7 @@ const ContactForm = ({ authorEmail }) => {
 
     const showSuccessMessage = () =>
         success && (
-            <div className="alert alert-info">Thank you for contacting us.</div>
+            <div className="alert alert-info">Email sent successfully.</div>
         );
 
     const showErrorMessage = () => (

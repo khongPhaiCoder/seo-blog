@@ -1,8 +1,26 @@
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import renderHTML from "react-render-html";
 import moment from "moment";
+import { Favorite, FavoriteBorder } from "@mui/icons-material";
+import { isAuth, getCookie } from "../../actions/auth";
+import { react } from "../../actions/blog";
 
 const Card = ({ blog }) => {
+    const [isReact, setIsReact] = useState(false);
+    const [likesCount, setLikesCount] = useState(0);
+
+    const onReactHandler = async () => {
+        const res = await react(blog.slug, getCookie("token"));
+        setIsReact(!isReact);
+        setLikesCount(res.likes_count);
+    };
+
+    useEffect(() => {
+        setIsReact(blog.likes.includes(isAuth()._id));
+        setLikesCount(blog.likes.length);
+    }, []);
+
     const showBlogCategories = (blog) =>
         blog.categories.map((c, i) => (
             <Link key={i} href={`/categories/${c.slug}`}>
@@ -23,7 +41,7 @@ const Card = ({ blog }) => {
         <div className="lead pb-4">
             <header>
                 <Link href={`/blogs/${blog.slug}`}>
-                    <a>
+                    <a style={{ textDecoration: "none" }}>
                         <h2 className="pt-3 pb-3 font-weight-bold">
                             {blog.title}
                         </h2>
@@ -42,6 +60,18 @@ const Card = ({ blog }) => {
             <section>
                 {showBlogCategories(blog)}
                 {showBlogTags(blog)}
+                <span
+                    className="float-right mt-3 mr-1"
+                    style={{ cursor: "pointer" }}
+                    onClick={onReactHandler}
+                >
+                    {isReact ? (
+                        <Favorite fontSize="large" />
+                    ) : (
+                        <FavoriteBorder fontSize="large" />
+                    )}
+                    {likesCount}
+                </span>
                 <br />
                 <br />
             </section>

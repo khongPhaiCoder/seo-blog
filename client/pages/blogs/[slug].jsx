@@ -7,10 +7,26 @@ import { API, DOMAIN, APP_NAME, FB_APP_ID } from "../../config";
 import renderHTML from "react-render-html";
 import moment from "moment";
 import SmallCard from "../../components/blog/SmallCard";
-import DisqusThread from "../../components/DisqusThread";
+import { Favorite, FavoriteBorder } from "@mui/icons-material";
+import { isAuth, getCookie } from "../../actions/auth";
+import { react } from "../../actions/blog";
 
 const SingleBlog = ({ blog, query }) => {
     const [related, setRelated] = useState([]);
+
+    const [isReact, setIsReact] = useState(false);
+    const [likesCount, setLikesCount] = useState(0);
+
+    const onReactHandler = async () => {
+        const res = await react(blog.slug, getCookie("token"));
+        setIsReact(!isReact);
+        setLikesCount(res.likes_count);
+    };
+
+    useEffect(() => {
+        setIsReact(blog.likes.includes(isAuth()._id));
+        setLikesCount(blog.likes.length);
+    }, []);
 
     const loadRelated = () => {
         listRelated({ blog }).then((data) => {
@@ -79,15 +95,7 @@ const SingleBlog = ({ blog, query }) => {
     };
 
     const showComments = () => {
-        return (
-            <div>
-                <DisqusThread
-                    id={blog.id}
-                    title={blog.title}
-                    path={`/blog/${blog.slug}`}
-                />
-            </div>
-        );
+        return <div></div>;
     };
 
     return (
@@ -131,6 +139,18 @@ const SingleBlog = ({ blog, query }) => {
                                     <div className="pb-3">
                                         {showBlogCategories(blog)}
                                         {showBlogTags(blog)}
+                                        <span
+                                            className="float-right mt-3 mr-1"
+                                            style={{ cursor: "pointer" }}
+                                            onClick={onReactHandler}
+                                        >
+                                            {isReact ? (
+                                                <Favorite fontSize="large" />
+                                            ) : (
+                                                <FavoriteBorder fontSize="large" />
+                                            )}
+                                            {likesCount}
+                                        </span>
                                         <br />
                                         <br />
                                     </div>

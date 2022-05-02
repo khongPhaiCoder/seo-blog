@@ -37,7 +37,9 @@ const Header = () => {
         <React.Fragment>
             <Navbar color="light" light expand="md">
                 <Link href="/">
-                    <NavLink className="font-weight-bold">{APP_NAME}</NavLink>
+                    <NavLink className="font-weight-bold">
+                        <span style={{ cursor: "pointer" }}>{APP_NAME}</span>
+                    </NavLink>
                 </Link>
                 <NavbarToggler onClick={toggle} />
                 <Collapse isOpen={isOpen} navbar>
@@ -45,54 +47,69 @@ const Header = () => {
                         <React.Fragment>
                             <NavItem>
                                 <Link href="/blogs">
-                                    <NavLink>Blogs</NavLink>
+                                    <NavLink>
+                                        <span style={{ cursor: "pointer" }}>
+                                            Blogs
+                                        </span>
+                                    </NavLink>
                                 </Link>
                             </NavItem>
-
                             {auth?.role === 1 && (
                                 <NavItem>
                                     <Link href="/contact">
-                                        <NavLink>Contact</NavLink>
+                                        <NavLink>
+                                            <span style={{ cursor: "pointer" }}>
+                                                Contact
+                                            </span>
+                                        </NavLink>
                                     </Link>
                                 </NavItem>
                             )}
                         </React.Fragment>
-
                         {!auth && (
                             <React.Fragment>
                                 <NavItem>
                                     <Link href="/signin">
-                                        <NavLink>Signin</NavLink>
+                                        <NavLink>
+                                            <span style={{ cursor: "pointer" }}>
+                                                Signin
+                                            </span>
+                                        </NavLink>
                                     </Link>
                                 </NavItem>
                                 <NavItem>
                                     <Link href="/signup">
-                                        <NavLink>Signup</NavLink>
+                                        <NavLink>
+                                            <span style={{ cursor: "pointer" }}>
+                                                Signup
+                                            </span>
+                                        </NavLink>
                                     </Link>
                                 </NavItem>
                             </React.Fragment>
                         )}
-
                         {auth && auth.role === 0 && (
                             <NavItem>
                                 <Link href="/user">
-                                    <NavLink>{`${
-                                        isAuth().name
-                                    }'s Dashboard`}</NavLink>
+                                    <NavLink>
+                                        <span style={{ cursor: "pointer" }}>
+                                            {`${isAuth().name}'s Dashboard`}
+                                        </span>
+                                    </NavLink>
                                 </Link>
                             </NavItem>
                         )}
-
                         {auth && auth.role === 1 && (
                             <NavItem>
                                 <Link href="/admin">
-                                    <NavLink>{`${
-                                        isAuth().name
-                                    }'s Dashboard`}</NavLink>
+                                    <NavLink>
+                                        <span style={{ cursor: "pointer" }}>
+                                            {`${isAuth().name}'s Dashboard`}
+                                        </span>
+                                    </NavLink>
                                 </Link>
                             </NavItem>
                         )}
-
                         {auth && (
                             <NavItem>
                                 <NavLink
@@ -101,16 +118,19 @@ const Header = () => {
                                         signout(() => Router.replace(`/signin`))
                                     }
                                 >
-                                    Signout
+                                    <span style={{ cursor: "pointer" }}>
+                                        Signout
+                                    </span>
                                 </NavLink>
                             </NavItem>
                         )}
-
                         {auth?.role === 0 && (
                             <NavItem>
                                 <Link href="/user/crud/create">
                                     <NavLink className="btn btn-primary text-light">
-                                        Write a blog
+                                        <span style={{ cursor: "pointer" }}>
+                                            Write a blog
+                                        </span>
                                     </NavLink>
                                 </Link>
                             </NavItem>
@@ -118,7 +138,7 @@ const Header = () => {
                     </Nav>
                 </Collapse>
             </Navbar>
-            <Search />
+            {auth?.role !== 1 && <Search />}
         </React.Fragment>
     );
 };

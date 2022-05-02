@@ -8,39 +8,47 @@ const AdminIndex = () => {
             <Admin>
                 <div className="container-fluid">
                     <div className="row">
-                        <div className="col-md-12 pt-5 pb-5">
+                        {/* <div className="col-md-12 pt-5 pb-5">
                             <h2>Admin Dashboard</h2>
-                        </div>
+                        </div> */}
                         <div className="col-md-4">
-                            <ul className="list-group">
-                                <li className="list-group-item">
-                                    <Link href="/admin/crud/category-tag">
-                                        <a>Create Category</a>
-                                    </Link>
-                                </li>
-
-                                <li className="list-group-item">
-                                    <Link href="/admin/crud/category-tag">
-                                        <a>Create Tag</a>
-                                    </Link>
-                                </li>
-
-                                <li className="list-group-item">
-                                    <a href="/admin/crud/blog">Create Blog</a>
-                                </li>
-
-                                <li className="list-group-item">
-                                    <Link href="/admin/crud/blogs">
-                                        <a>Update/Delete Blog</a>
-                                    </Link>
-                                </li>
-
-                                <li className="list-group-item">
-                                    <Link href="/user/update">
-                                        <a>Update Profile</a>
-                                    </Link>
-                                </li>
-                            </ul>
+                            <div className="list-group">
+                                <a
+                                    href="/admin/crud/category-tag"
+                                    className="list-group-item"
+                                    style={{ textDecoration: "none" }}
+                                >
+                                    Create Category
+                                </a>
+                                <a
+                                    href="/admin/crud/category-tag"
+                                    className="list-group-item"
+                                    style={{ textDecoration: "none" }}
+                                >
+                                    Create Tag
+                                </a>
+                                <a
+                                    href="/admin/crud/blog"
+                                    className="list-group-item"
+                                    style={{ textDecoration: "none" }}
+                                >
+                                    Create Blog
+                                </a>
+                                <a
+                                    href="/admin/crud/blogs"
+                                    className="list-group-item"
+                                    style={{ textDecoration: "none" }}
+                                >
+                                    Update/Delete Blog
+                                </a>
+                                <a
+                                    href="/user/update"
+                                    className="list-group-item"
+                                    style={{ textDecoration: "none" }}
+                                >
+                                    Update Profile
+                                </a>
+                            </div>
                         </div>
                         {/* <div className="col-md-8">right</div> */}
                     </div>

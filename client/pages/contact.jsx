@@ -1,18 +1,21 @@
 import Layout from "../components/Layout";
 import ContactForm from "../components/form/ContactForm";
+import Admin from "../components/auth/Admin";
 
 const Contact = () => {
     return (
         <Layout>
-            <div className="container-fluid">
-                <div className="row">
-                    <div className="col-md-8 offset-md-2">
-                        <h2>Contact form</h2>
-                        <hr />
-                        <ContactForm />
+            <Admin>
+                <div className="container-fluid">
+                    <div className="row">
+                        <div className="col-md-8 offset-md-2">
+                            <h2>Contact form</h2>
+                            <hr />
+                            <ContactForm />
+                        </div>
                     </div>
                 </div>
-            </div>
+            </Admin>
         </Layout>
     );
 };

@@ -197,7 +197,10 @@ const ProfileUpdate = () => {
                                     : photo
                             }
                             className="img img-fluid img-thumbnail mb-3"
-                            style={{ maxHeight: "auto", maxWidth: "100%" }}
+                            style={{
+                                maxHeight: "auto",
+                                maxWidth: "100%",
+                            }}
                             alt="user profile"
                         />
                     </div>
