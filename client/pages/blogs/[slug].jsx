@@ -10,6 +10,7 @@ import SmallCard from "../../components/blog/SmallCard";
 import { Favorite, FavoriteBorder } from "@mui/icons-material";
 import { isAuth, getCookie } from "../../actions/auth";
 import { react } from "../../actions/blog";
+import Comments from "../../components/comments/Comments";
 
 const SingleBlog = ({ blog, query }) => {
     const [related, setRelated] = useState([]);
@@ -29,7 +30,7 @@ const SingleBlog = ({ blog, query }) => {
     }, []);
 
     const loadRelated = () => {
-        listRelated({ blog }).then((data) => {
+        listRelated(blog).then((data) => {
             if (data.error) {
                 console.log(data.error);
             } else {
@@ -95,7 +96,7 @@ const SingleBlog = ({ blog, query }) => {
     };
 
     const showComments = () => {
-        return <div></div>;
+        return <Comments blogId={blog._id} />;
     };
 
     return (
@@ -186,7 +187,6 @@ SingleBlog.getInitialProps = ({ query }) => {
         if (data.error) {
             console.log(data.error);
         } else {
-            // console.log('GET INITIAL PROPS IN SINGLE BLOG', data);
             return { blog: data, query };
         }
     });

@@ -17,6 +17,7 @@ CommentMiddleware.updateValidation = [
         .isEmpty()
         .withMessage("Enter a comment..., body is required"),
     body("commentId").isMongoId().withMessage("Comment id is required"),
+    body("user").isMongoId().withMessage("User Id is required"),
 ];
 
 CommentMiddleware.deleteValidation = [

@@ -20,8 +20,22 @@ CommentController.create = wrapAsync(async (req, res, next) => {
 
     const comment = await CommentService.create({ ...payload, path });
 
+    const regex = new RegExp(`${path.split(",")[0]}`);
+
+    const comments = await CommentService.find({ path: regex });
+
+    const _comments = comments.map((item) => {
+        return {
+            ...item._doc,
+            _id: item._id.toString(),
+        };
+    });
+
+    const nestedComment = convertToTreeView(_comments, path.split(",")[0]);
+
     res.status(StatusCodes.CREATED).json({
         message: `Comment ${comment._id.toString()} created.`,
+        nestedComment,
     });
 });
 
@@ -57,7 +71,23 @@ CommentController.update = wrapAsync(async (req, res, next) => {
 
     const newComment = await CommentService.update(commentId, { body });
 
-    res.status(StatusCodes.OK).json(newComment);
+    const regex = new RegExp(`${newComment._doc.path.split(",")[0]}`);
+
+    const comments = await CommentService.find({ path: regex });
+
+    const _comments = comments.map((item) => {
+        return {
+            ...item._doc,
+            _id: item._id.toString(),
+        };
+    });
+
+    const nestedComment = convertToTreeView(
+        _comments,
+        newComment._doc.path.split(",")[0]
+    );
+
+    res.status(StatusCodes.OK).json(nestedComment);
 });
 
 CommentController.delete = wrapAsync(async (req, res, next) => {
@@ -76,12 +106,28 @@ CommentController.delete = wrapAsync(async (req, res, next) => {
         throw new CustomError.UnauthorizedError("Access denied");
     }
 
-    const regex = new RegExp(`^${comment._doc.path}`);
+    const path = comment._doc.path;
 
-    await CommentService.delete(commentId, { path: regex });
+    const deleteRegex = new RegExp(`^${path}`);
+
+    await CommentService.delete({ path: deleteRegex });
+
+    const regex = new RegExp(`${path.split(",")[0]}`);
+
+    const comments = await CommentService.find({ path: regex });
+
+    const _comments = comments.map((item) => {
+        return {
+            ...item._doc,
+            _id: item._id.toString(),
+        };
+    });
+
+    const nestedComment = convertToTreeView(_comments, path.split(",")[0]);
 
     res.status(StatusCodes.OK).json({
         message: `Comment ${commentId} deleted`,
+        nestedComment,
     });
 });
 
